@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
+
+<mapper namespace="future.zwp.dao.UserDao" >
+	  
+	<insert id="insertUser">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+			select replace(uuid(),'-','') from dual
+		</selectKey>
+		insert into e_user values(#{id},#{email},#{name},#{password},#{bornDate})
+	</insert>
+	
+	<delete id="deleteUser">
+		delete from e_user where id = #{id}
+	</delete>
+	
+	<update id="updateUser">
+		update e_user 
+		<set>
+			<if test="emain!=null">email = #{email},</if>
+			<if test="name!=null">name = #{name},</if>
+			<if test="password!=null">password = #{password},</if>
+			<if test="borndate!=null">borndate = #{bornDate} </if>
+			where id = #{id}
+		</set>
+	</update>
+  
+  	<select id="queryByEmail" resultType="User">
+  		select * from e_user where email = #{email}
+  	</select>
+  	
+  	<select id="queryById" resultType="User">
+  		select * from e_user where id = #{id}
+  	</select>
+  	
+  	<select id="queryAllUser" resultType="User">
+  		select * from e_user 
+  	</select>
+  	
+</mapper>
