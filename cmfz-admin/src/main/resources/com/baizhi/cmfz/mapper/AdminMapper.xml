@@ -1,40 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
 
-<mapper namespace="future.zwp.dao.UserDao" >
-	  
-	<insert id="insertUser">
-		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.String">
+<mapper namespace="com.baizhi.cmfz.dao.AdminDao" >
+	<insert id="insertAdmin">
+		<selectKey keyProperty="adminId" order="BEFORE" resultType="java.lang.String">
 			select replace(uuid(),'-','') from dual
 		</selectKey>
-		insert into e_user values(#{id},#{email},#{name},#{password},#{bornDate})
+		insert into t_admin values(#{adminId},#{adminName},#{adminPassword},#{adminSalt},#{adminRank})
 	</insert>
-	
-	<delete id="deleteUser">
-		delete from e_user where id = #{id}
+
+
+	<delete id="deleteAdmin">
+			delete from t_admin where admin_name=#{adminName}
 	</delete>
-	
-	<update id="updateUser">
-		update e_user 
+
+
+
+	<update id="updateAdmin">
+		update t_admin
 		<set>
-			<if test="emain!=null">email = #{email},</if>
-			<if test="name!=null">name = #{name},</if>
-			<if test="password!=null">password = #{password},</if>
-			<if test="borndate!=null">borndate = #{bornDate} </if>
-			where id = #{id}
+			<if test="adminName!=null and adminName!=''">admin_name=#{adminName},</if>
+			<if test="adminPassword!=null and adminPassword!=''">admin_password=#{adminPassword},</if>
+			<if test="adminSalt!=null and adminSalt!=''">admin_salt=#{adminSalt},</if>
+			<if test="adminRank!=null and adminRank!=''">admin_rank=#{adminRank},</if>
 		</set>
+		where admin_id=#{adminId}
 	</update>
-  
-  	<select id="queryByEmail" resultType="User">
-  		select * from e_user where email = #{email}
-  	</select>
-  	
-  	<select id="queryById" resultType="User">
-  		select * from e_user where id = #{id}
-  	</select>
-  	
-  	<select id="queryAllUser" resultType="User">
-  		select * from e_user 
-  	</select>
+	  
+	<select id="selectByName" resultType="Admin">
+		select admin_id,admin_name,admin_password,admin_salt,admin_rank from t_admin
+		where admin_name = #{adminName}
+	</select>
   	
 </mapper>

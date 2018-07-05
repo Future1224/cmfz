@@ -3,6 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <body>
-            <%response.sendRedirect(request.getContextPath()+"/admin/getCookie"); %>
+            <h1>登陆成功</h1>
     </body>
 </html>
