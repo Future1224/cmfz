@@ -83,8 +83,8 @@ public class AdminController {
      * 描述:
      *
      * @author future_zwp
-     * @date 2018/7/4 20:23
-     * @param [adminName, adminPassword, code, model, session, response]
+     * @Date 2018/7/5 9:07
+     * @Param [adminName, adminPassword, remember, code, model, session, response]
      * @return java.lang.String
      */
     @RequestMapping("/login")
@@ -110,7 +110,7 @@ public class AdminController {
                             response.addCookie(adminPassword2);
                         }
                         model.addAttribute("admin",admin);                     //存admin到session中
-                        return "home";
+                        return "main/main";
                     }
                 }
 

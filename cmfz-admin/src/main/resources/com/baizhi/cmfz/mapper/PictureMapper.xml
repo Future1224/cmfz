@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.cmfz.dao.PictureDao" >
+	<insert id="insertPicture">
+		<selectKey keyProperty="pictureId" order="BEFORE" resultType="java.lang.String">
+			select replace(uuid(),'-','') from dual
+		</selectKey>
+		insert into t_picture values(#{pictureId},#{picturePath},#{bannerLink},#{pictureName},#{pictureStatus},#{pictureDate})
+	</insert>
+
+
+	<delete id="deletePicture">
+			delete from t_picture where picture_id=#{pictureId}
+	</delete>
+
+
+
+	<update id="updatePicture">
+		update t_picture
+		<set>
+			<if test="picturePath!=null and picturePath!=''">picture_path=#{picturePath},</if>
+			<if test="bannerLink!=null and bannerLink!=''">banner_link=#{bannerLink},</if>
+			<if test="pictureName!=null and pictureName!=''">picture_name=#{pictureName},</if>
+			<if test="pictureStatus!=null and pictureStatus!=''">picture_status=#{pictureStatus},</if>
+			<if test="pictureDate!=null and pictureDate!=''">picture_date=#{pictureDate},</if>
+		</set>
+		where picture_id=#{pictureId}
+	</update>
+
+	<select id="count" resultType="java.lang.Long">
+		select count(*) from t_picture
+	</select>
+	  
+	<select id="selectById" resultType="Picture">
+		select picture_id,picture_path,banner_link,picture_name,picture_status,picture_date from t_picture
+		where picture_id=#{pictureId}
+	</select>
+
+	<select id="selectAll" resultType="Picture">
+		select picture_id,picture_path,banner_link,picture_name,picture_status,picture_date from t_picture
+		limit #{begin},#{rows}
+	</select>
+  	
+</mapper>

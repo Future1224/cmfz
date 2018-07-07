@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.cmfz.dao.MenuDao" >
+	<resultMap id="MenuMap" type="Menu">
+		<id property="menuId" column="menu_id"></id>
+		<result property="menuName" column="menu_name"></result>
+		<result property="menuCode" column="menu_code" ></result>
+		<result property="menuIcon" column="menu_icon" ></result>
+		<result property="menuUrl" column="menu_url" ></result>
+		<result property="menuRank" column="menu_rank"></result>
+		<result property="menuParentId" column="menu_parentid"></result>
+		<collection property="subMenus" ofType="Menu">
+			<id property="menuId" column="subid"></id>
+			<result property="menuName" column="subname"></result>
+			<result property="menuCode" column="subcode" ></result>
+			<result property="menuIcon" column="subicon" ></result>
+			<result property="menuUrl" column="suburl" ></result>
+			<result property="menuRank" column="subrank"></result>
+			<result property="menuParentId" column="subparentid"></result>
+		</collection>
+
+	</resultMap>
+
+	  
+	<select id="selectAll" resultMap="MenuMap">
+		SELECT
+		a.menu_id,
+		a.menu_name,
+		a.menu_code,
+		a.menu_icon,
+		a.menu_url,
+		a.menu_rank,
+		a.menu_parentid,
+		b.menu_id subid,
+		b.menu_name subname,
+		b.menu_code subcode,
+		b.menu_icon subicon,
+		b.menu_url suburl,
+		b.menu_rank subrank,
+		b.menu_parentid subparentid
+		FROM
+		t_menu a
+		LEFT JOIN t_menu b ON a.menu_id = b.menu_parentid
+		WHERE
+		a.menu_rank = 1
+	</select>
+  	
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.cmfz.dao.GuruDao" >
+	<insert id="insertGuru">
+		<selectKey keyProperty="guruId" order="BEFORE" resultType="java.lang.String">
+			select replace(uuid(),'-','') from dual
+		</selectKey>
+		insert into t_guru values(#{guruId},#{guruName},#{guruPhoto},#{guruIntro})
+	</insert>
+
+
+	<delete id="deleteGuru">
+			delete from t_guru where guru_id=#{guruId}
+	</delete>
+
+
+
+	<update id="updateGuru">
+		update t_guru
+		<set>
+			<if test="guruName!=null and guruName!=''">guru_name=#{guruName},</if>
+			<if test="guruPhoto!=null and guruPhoto!=''">guru_photo=#{guruPhoto},</if>
+			<if test="guruIntro!=null and guruIntro!=''">guru_intro=#{guruIntro},</if>
+		</set>
+		where guru_id=#{guruId}
+	</update>
+
+	<select id="count" resultType="java.lang.Long">
+		select count(*) from t_guru
+	</select>
+	<select id="countLikeName" resultType="java.lang.Long">
+		select count(*) from t_guru where guru_name like #{guruName}
+	</select>
+	  
+	<select id="selectById" resultType="Guru">
+		select guru_id,guru_name,guru_photo,guru_intro from t_guru
+		where guru_id=#{guruId}
+	</select>
+
+
+	<select id="selectLikeName" resultType="Guru">
+		select guru_id,guru_name,guru_photo,guru_intro from t_guru
+		where guru_name like #{guruName}
+		limit #{begin},#{rows}
+	</select>
+
+	<select id="selectAll" resultType="Guru">
+		select guru_id,guru_name,guru_photo,guru_intro from t_guru
+		limit #{begin},#{rows}
+	</select>
+  	
+</mapper>
