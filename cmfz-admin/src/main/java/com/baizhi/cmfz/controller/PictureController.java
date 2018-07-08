@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * 描述:
+ * 描述:轮播图控制器
  *
  * @author future_zwp
  * @create 2018-07-05 21:13
@@ -27,7 +27,14 @@ public class PictureController {
     @Autowired
     private PictureService ps;
 
-
+    /**
+     * 描述:分页展示所有轮播图片
+     *
+     * @author future_zwp
+     * @Date 2018/7/7 21:02
+     * @Param [page, rows]
+     * @return java.util.Map<java.lang.String,java.lang.Object>
+     */
     @RequestMapping("/showAll")
     @ResponseBody
     public Map<String,Object> showAll(Integer page,Integer rows){
@@ -36,19 +43,45 @@ public class PictureController {
 
 
 
-
+    /**
+     * 描述:根据轮播图Id查询轮播图信息
+     *
+     * @author future_zwp
+     * @Date 2018/7/7 21:02
+     * @Param [pictureId]
+     * @return com.baizhi.cmfz.entity.Picture
+     */
     @RequestMapping("/showById")
     @ResponseBody
     public Picture showById(String pictureId){
         return ps.queryById(pictureId);
     }
 
+
+
+    /**
+     * 描述:修改轮播图
+     *
+     * @author future_zwp
+     * @Date 2018/7/7 21:03
+     * @Param [picture]
+     * @return java.lang.Boolean
+     */
     @RequestMapping("/modifyPicture")
     @ResponseBody
     public Boolean modifyPicture(Picture picture){
         return ps.modifyPicture(picture);
     }
 
+
+    /**
+     * 描述: 添加轮播图（并将轮播图片上传到upload/picture文件夹）
+     *
+     * @author future_zwp
+     * @Date 2018/7/7 21:03
+     * @Param [pictureFile, request, picture]
+     * @return java.lang.Boolean
+     */
     @RequestMapping("/uploadPicture")
     @ResponseBody
     public Boolean uploadPicture(MultipartFile pictureFile, HttpServletRequest request, Picture picture) throws IOException {

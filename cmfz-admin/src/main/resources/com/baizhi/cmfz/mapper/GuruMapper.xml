@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.baizhi.cmfz.dao.GuruDao" >
+
 	<insert id="insertGuru">
 		<selectKey keyProperty="guruId" order="BEFORE" resultType="java.lang.String">
 			select replace(uuid(),'-','') from dual
@@ -9,6 +10,15 @@
 		insert into t_guru values(#{guruId},#{guruName},#{guruPhoto},#{guruIntro})
 	</insert>
 
+	<insert id="insertBulkGuru" parameterType="java.util.List" >
+		insert into t_guru values
+		<foreach collection="gurus" item="guru" index="index" separator="," >
+			(replace(uuid(),"-",""),
+			#{guru.guruName},
+			#{guru.guruPhoto},
+			#{guru.guruIntro})
+		</foreach>
+	</insert>
 
 	<delete id="deleteGuru">
 			delete from t_guru where guru_id=#{guruId}
@@ -49,5 +59,4 @@
 		select guru_id,guru_name,guru_photo,guru_intro from t_guru
 		limit #{begin},#{rows}
 	</select>
-  	
 </mapper>

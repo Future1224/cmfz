@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 描述:
+ * 描述:上师业务层
  *
  * @author future_zwp
  * @create 2018-07-06 17:56
@@ -29,6 +29,15 @@ public class guruServiceImpl implements GuruService {
     @Override
     public Boolean addGuru(Guru guru) {
         Integer i = gd.insertGuru(guru);
+        if(i>0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean addBulkGuru(List<Guru> gurus) {
+        Integer i = gd.insertBulkGuru(gurus);
         if(i>0){
             return true;
         }

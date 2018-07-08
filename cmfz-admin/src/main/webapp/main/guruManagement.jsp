@@ -35,11 +35,6 @@
                     "        </td>\n" +
                     "    </tr>\n" +
                     "</table>";
-
-
-
-
-                //"<img src=\"${pageContext.request.contextPath}/upload/guruPhoto/" + rowData.guruPhoto + "\"/>"
             },
             onLoadSuccess: function (data) {
 
@@ -47,8 +42,26 @@
                     iconCls: "icon-edit",
                 })
             }
-
         });
+
+        $("#guruLike").searchbox({
+            searcher: function (value, name) {
+                $("#guruTable").datagrid({
+                    queryParams: {
+                        like: value,
+                    },
+                    url: "${pageContext.request.contextPath}/guru/"+name,
+                });
+            },
+            menu: "#mm",
+            prompt: "请输入搜索内容",
+            width: 240,
+            height: 35
+        });
+
+
+
+
 
         $("#addGuru").linkbutton({
             onClick: function () {
@@ -97,8 +110,6 @@
                                 });
                             }
                         });
-
-
                         $("#unAddGuruForm").linkbutton({
                             iconCls: "icon-add",
                             onClick: function () {
@@ -109,6 +120,83 @@
                 });
             },
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+        $("#addBulkGuru").linkbutton({
+            onClick: function () {
+                $("#addBulkGuruDialog").dialog({
+                    title: "添加上师信息",
+                    width: 450,
+                    height: 200,
+                    collapsible: true,
+                    minimizable: true,
+                    maximizable: true,
+                    resizable: true,
+                    closed: false,
+                    cache: false,
+                    href: "${pageContext.request.contextPath}/main/addBulkGuru.jsp",
+                    modal: true,
+                    onLoad: function () {
+
+                        $("#enAddBulkGuruForm").linkbutton({
+                            iconCls: "icon-add",
+                            onClick: function () {
+                                $("#addBulkGuruForm").form("submit", {
+                                    novalidate: true,
+                                    url: "${pageContext.request.contextPath}/guru/addBulkGuru",
+                                    onSubmit: function () {
+                                    },
+                                    success: function (res) {
+                                        var re = JSON.parse(res);
+                                        if (re) {
+                                            $.messager.show({
+                                                title: '我的消息',
+                                                msg: '批量添加成功,消息将在5秒后关闭。',
+                                                timeout: 5000,
+                                                showType: 'slide'
+                                            });
+                                            $("#guruTable").datagrid("reload");
+                                            $("#addBulkGuruDialog").dialog("close");
+                                        } else {
+                                            $.messager.show({
+                                                title: '我的消息',
+                                                msg: '批量添加失败,消息将在5秒后关闭。',
+                                                timeout: 5000,
+                                                showType: 'slide'
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        $("#unAddBulkGuruForm").linkbutton({
+                            iconCls: "icon-add",
+                            onClick: function () {
+                                $("#addBulkGuruDialog").dialog("close");
+                            }
+                        });
+                    },
+                });
+            },
+        });
+
+
+
+
+
+
+
 
 
     });
@@ -178,10 +266,19 @@
 
 <table id="guruTable"></table>
 <div id="toolGuru">
-    <a id="addGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35">添加上师</a>
-    <a id="helpGuru" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true,height:35">帮助</a>
+    <a id="addGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35">添加上师</a>&nbsp;&nbsp;
+    <a id="helpGuru" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true,height:35">帮助</a>&nbsp;&nbsp;
+    <input id="guruLike" />
+    <div id="mm" style="width:120px">
+        <div data-options="name:'showLikeName',iconCls:'icon-ok'">上师法名</div>
+    </div>&nbsp;&nbsp;
+    <a id="addBulkGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35" >批量添加上师</a>&nbsp;&nbsp;
+
+
 </div>
 <div id="addGuruDialog"></div>
 <div id="modifyGuruDialog"></div>
+<div id="addBulkGuruDialog"></div>
+
 
 

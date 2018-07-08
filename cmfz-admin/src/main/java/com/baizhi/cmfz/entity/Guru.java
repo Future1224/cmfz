@@ -1,5 +1,6 @@
 package com.baizhi.cmfz.entity;
 
+import org.jeecgframework.poi.excel.annotation.Excel;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +13,15 @@ import java.io.Serializable;
  * @create 2018-07-06 16:52
  */
 @Component
-@Scope("prototype")
-public class Guru implements Serializable {
 
+public class Guru implements Serializable {
+    @Excel(name = "上师编号")
     private String guruId;
+    @Excel(name = "上师法名")
     private String guruName;//上师法名
+    @Excel(name = "上师头像路径")
     private String guruPhoto;//上师头像
+    @Excel(name = "上师简介")
     private String guruIntro;//上师简介
 
 

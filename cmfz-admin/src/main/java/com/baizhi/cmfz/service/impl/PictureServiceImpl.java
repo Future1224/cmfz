@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 描述:
+ * 描述:轮播图业务层
  *
  * @author future_zwp
  * @create 2018-07-05 21:01

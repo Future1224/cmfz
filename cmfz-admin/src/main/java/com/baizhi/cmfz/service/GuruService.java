@@ -2,6 +2,7 @@ package com.baizhi.cmfz.service;
 
 import com.baizhi.cmfz.entity.Guru;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,6 +14,8 @@ import java.util.Map;
 public interface GuruService {
 
     public Boolean addGuru(Guru guru);
+
+    public Boolean addBulkGuru(List<Guru> gurus);
 
     public Boolean removeGuru( String guruId);
 

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 描述:
+ * 描述:菜单业务层
  *
  * @author future_zwp
  * @create 2018-07-05 13:10
