@@ -24,18 +24,7 @@ import java.util.Random;
 public class AdminTest {
 
 
-    @Test
-    public void m1(){
 
-        ApplicationContext ApplicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        AdminDao ad = (AdminDao)ApplicationContext.getBean("adminDao");
-        Admin admin = ad.selectByName("张三");
-        System.out.println(admin);
-        String s = DigestUtils.md5Hex("666666" + "abcde");
-        System.out.println(s);
-
-        System.out.println(RandomStringUtils.randomAlphanumeric(5));
-    }
 
 
     @Test

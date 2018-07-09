@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.cmfz.dao.ArticleDao">
+    <resultMap id="ArticleMap" type="Article">
+        <id property="articleId" column="article_id"></id>
+        <result property="articleName" column="article_name"></result>
+        <result property="articleStatus" column="article_status"></result>
+        <result property="articleIntro" column="article_intro"></result>
+        <result property="articleDate" column="article_date"></result>
+        <association property="guru" javaType="Guru">
+            <id property="guruId" column="guru_id"></id>
+            <result property="guruName" column="guru_name"></result>
+            <result property="guruPhoto" column="guru_photo"></result>
+            <result property="guruIntro" column="guru_intro"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertArticle">
+        insert into t_article
+        values(replace(uuid(),"-",""),#{articleName},#{articleStatus},#{articleIntro},#{articleDate},#{guru.guruId})
+    </insert>
+
+
+</mapper>

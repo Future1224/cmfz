@@ -60,11 +60,11 @@ public class AdminServiceImpl implements AdminService {
 
 
     /**
-     * 描述:添加管理员信息业务
+     * 描述:
      *
      * @author future_zwp
-     * @date 2018/7/4 22:34
-     * @param [admin]
+     * @Date 2018/7/8 22:59
+     * @Param [admin]
      * @return java.lang.Boolean
      */
     @Override

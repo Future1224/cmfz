@@ -105,4 +105,16 @@ public interface GuruDao {
      * @return java.util.List<com.baizhi.cmfz.entity.Guru>
      */
     public List<Guru> selectAll(@Param("begin") Integer begin,@Param("rows") Integer rows);
+
+
+    /**
+     * 描述: 不分页查询全部上师信息表
+     *
+     * @author future_zwp
+     * @Date 2018/7/9 13:40
+     * @Param []
+     * @return java.util.List<com.baizhi.cmfz.entity.Guru>
+     */
+    public List<Guru> selectAllNoPage();
+
 }

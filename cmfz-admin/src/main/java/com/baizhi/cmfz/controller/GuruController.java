@@ -142,4 +142,13 @@ public class GuruController {
 
 
 
+    @RequestMapping("/searchAll")
+    @ResponseBody
+    public List<Guru> searchAll(){
+        return  gs.querytAllNoPage();
+    }
+
+
+
+
 }

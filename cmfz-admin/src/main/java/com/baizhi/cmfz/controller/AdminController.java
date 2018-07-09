@@ -38,8 +38,8 @@ public class AdminController {
      * 描述:
      *
      * @author future_zwp
-     * @date 2018/7/4 20:31
-     * @param [request, model]
+     * @Date 2018/7/9 12:03
+     * @Param [request, model]
      * @return java.lang.String
      */
     @RequestMapping("/getCookie")
@@ -66,8 +66,8 @@ public class AdminController {
      * 描述:
      *
      * @author future_zwp
-     * @date 2018/7/4 20:23
-     * @param [response, session]
+     * @Date 2018/7/9 12:04
+     * @Param [response, session]
      * @return void
      */
     @RequestMapping("/newCode")

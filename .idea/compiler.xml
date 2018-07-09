@@ -10,10 +10,6 @@
         <module name="cmfz-rest" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="cmfz" target="1.5" />
-      <module name="cmfz-admin" target="1.7" />
-      <module name="cmfz-rest" target="1.7" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="8" />
   </component>
 </project>

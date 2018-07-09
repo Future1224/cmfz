@@ -26,4 +26,7 @@ public interface GuruService {
     public Map<String,Object> queryLikeName(String guruName, Integer page, Integer rows);
 
     public Map<String,Object>  querytAll(Integer page,Integer rows);
+
+
+    public List<Guru>  querytAllNoPage();
 }

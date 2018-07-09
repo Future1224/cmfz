@@ -59,4 +59,12 @@
 		select guru_id,guru_name,guru_photo,guru_intro from t_guru
 		limit #{begin},#{rows}
 	</select>
+
+
+
+	<select id="selectAllNoPage" resultType="Guru">
+		select guru_id,guru_name,guru_photo,guru_intro from t_guru
+	</select>
+
+
 </mapper>

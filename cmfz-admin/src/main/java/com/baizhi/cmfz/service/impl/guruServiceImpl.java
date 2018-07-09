@@ -38,7 +38,7 @@ public class guruServiceImpl implements GuruService {
     @Override
     public Boolean addBulkGuru(List<Guru> gurus) {
         Integer i = gd.insertBulkGuru(gurus);
-        if(i>0){
+        if(i== gurus.size()){
             return true;
         }
         return false;
@@ -74,7 +74,7 @@ public class guruServiceImpl implements GuruService {
         String s = "%" + guruName + "%";
         List<Guru> gurus = gd.selectLikeName(s, (page - 1) * rows, rows);
         Long count = gd.countLikeName(s);
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("total",count);
         map.put("rows",gurus);
         return map;
@@ -85,9 +85,15 @@ public class guruServiceImpl implements GuruService {
     public Map<String,Object> querytAll(Integer page, Integer rows) {
         List<Guru> gurus = gd.selectAll((page - 1) * rows, rows);
         Long count = gd.count();
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("total",count);
         map.put("rows",gurus);
         return map;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
+    public List<Guru> querytAllNoPage() {
+        return gd.selectAllNoPage();
     }
 }

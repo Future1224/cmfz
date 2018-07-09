@@ -3,19 +3,19 @@
 
 <script type="text/javascript">
     $(function () {
-            $("#pictureName").textbox({
+            $("#pictureName1").textbox({
                 width : 250,
                 height : 25,
                 required : true,
             });
 
 
-        $("#bannerLink").textbox({
+        $("#bannerLink1").textbox({
             width : 250,
             height : 25,
             required : true,
         });
-        $("#pictureStatus").combobox({
+        $("#pictureStatus1").combobox({
             width : 250,
             height : 25,
             panelHeight: 50,
@@ -49,28 +49,28 @@
             <tr><td> </td><td> </td></tr>
             <tr>
                 <td>轮播图描述:</td>
-                <td><input id="pictureName" name="pictureName"></td>
+                <td><input id="pictureName1" name="pictureName"></td>
             </tr>
             <tr><td> </td><td> </td></tr>
             <tr><td> </td><td> </td></tr>
             <tr>
                 <td>图片跳转路径:</td>
-                <td><input id="bannerLink" name="bannerLink"></td>
+                <td><input id="bannerLink1" name="bannerLink"></td>
             </tr>
             <tr><td> </td><td> </td></tr>
             <tr><td> </td><td> </td></tr>
             <tr>
                 <td>轮播图状态:</td>
                 <td>
-                    <input id="pictureStatus" name="pictureStatus">
+                    <input id="pictureStatus1" name="pictureStatus">
                 </td>
             </tr>
             <tr><td> </td><td> </td></tr>
             <tr><td> </td><td> </td></tr>
             <tr>
-                <td><input id="picturePath" name="picturePath" hidden="ture"></td>
-                <td><input id="pictureDate" name="pictureDate" hidden="ture"></td>
-                <td><input id="pictureId" name="pictureId" hidden="ture"></td>
+                <td><input id="picturePath1" name="picturePath" hidden="ture"></td>
+                <td><input id="pictureDate1" name="pictureDate" hidden="ture"></td>
+                <td><input id="pictureId1" name="pictureId" hidden="ture"></td>
             </tr>
             <tr><td> </td><td> </td></tr>
             <tr><td> </td><td> </td></tr>
