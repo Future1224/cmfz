@@ -60,7 +60,11 @@
         });
 
 
-
+        $("#exportGuru").linkbutton({
+            onClick : function () {
+                window.location.href="${pageContext.request.contextPath}/guru/exportGuru";
+            }
+        })
 
 
         $("#addGuru").linkbutton({
@@ -272,6 +276,7 @@
     <div id="mm" style="width:120px">
         <div data-options="name:'showLikeName',iconCls:'icon-ok'">上师法名</div>
     </div>&nbsp;&nbsp;
+    <a id="exportGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35" >导出上师</a>&nbsp;&nbsp;
     <a id="addBulkGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35" >批量添加上师</a>&nbsp;&nbsp;
 
 

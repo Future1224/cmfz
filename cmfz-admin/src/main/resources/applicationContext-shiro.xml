@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--凭证匹配器-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <!--指定加密算法-->
+        <property name="hashAlgorithmName" value="md5"></property>
+        <!--指定散列次数-->
+        <property name="hashIterations" value="520"></property>
+    </bean>
+
+    <!--自定义数据源Realm-->
+    <bean id="myRealm" class="com.baizhi.cmfz.util.MyRealm">
+        <!--注入凭证匹配器-->
+        <property name="credentialsMatcher" ref="credentialsMatcher"></property>
+    </bean>
+
+    <!--配置安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--注入自定义Realm-->
+            <property name="realms">
+                <list>
+                    <ref bean="myRealm"></ref>
+                </list>
+            </property>
+    </bean>
+    <!--配置与web.xml对应的filter Bean-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--注入安全管理器-->
+        <property name="securityManager" ref="securityManager"></property>
+        <!--登录的路径-->
+        <property name="loginUrl" value="/admin/getCookie"></property>
+        <!--登陆成功访问的页面-->
+        <!--<property name="successUrl" value="/main/main.jsp"></property>-->
+        <!--配置过滤链-->
+        <property name="filterChainDefinitions">
+            <value>
+                /css/**=anon
+                /img/**=anon
+                /js/**=anon
+                /script/**=anon
+                /themes/**=anon
+                /admin/getCookie = anon
+                /admin/newCode = anon
+                /admin/login = anon
+                /login.jsp = anon
+                /** = authc
+            </value>
+        </property>
+
+    </bean>
+
+
+
+
+
+</beans>

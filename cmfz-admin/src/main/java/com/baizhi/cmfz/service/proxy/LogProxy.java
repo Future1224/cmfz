@@ -6,7 +6,6 @@ import com.baizhi.cmfz.entity.Log;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +37,7 @@ public class LogProxy {
 //    public void myPointut(){}
 
     //@Around("myPointut()")
-    @Around("execution(* com.baizhi.cmfz.service.*.add*(..)) || execution(* com.baizhi.cmfz.service.*.remove*(..)) || execution(* com.baizhi.cmfz.service.*.modify*(..))")
+    @Around("execution(* com.baizhi.cmfz.service.impl.*.add*(..)) || execution(* com.baizhi.cmfz.service.impl.*.remove*(..)) || execution(* com.baizhi.cmfz.service.impl.*.modify*(..))")
     @Transactional
     public Object logAround(ProceedingJoinPoint joinPoint){
 
@@ -55,16 +54,16 @@ public class LogProxy {
         log.setLogDate(new Date());
 
 
-        String simpleName = joinPoint.getSignature().getDeclaringType().getSimpleName();//获取目标方法所属类的简单对象名字
+        String simpleName = joinPoint.getSignature().getDeclaringType().getSimpleName();//获取目标方法所属类的简单对象名字XXXService
         log.setResource(simpleName.replace("Service",""));
 
 
-        String methodName = joinPoint.getSignature().getName();
+        String methodName = joinPoint.getSignature().getName();//获取目标方法的名字
         log.setAction(methodName);
 
 
         StringBuilder stringBuilder = new StringBuilder();
-        Object[] args = joinPoint.getArgs();
+        Object[] args = joinPoint.getArgs();//获取目标方法的参数
         if(args!=null&&args.length>0){
             for (Object arg : args) {
                 stringBuilder.append(arg.toString()).append(";");

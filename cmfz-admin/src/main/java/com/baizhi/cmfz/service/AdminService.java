@@ -18,7 +18,7 @@ public interface AdminService {
      * @param
      * @return
      */
-    public Admin login(String name, String password);
+    public Admin login(String name, String password)throws Exception;
 
 
     /**
@@ -26,14 +26,14 @@ public interface AdminService {
      *
      * @author future_zwp
      * @date 2018/7/4 22:19
-     * @param [name]
+     * @param
      * @return com.baizhi.cmfz.entity.Admin
      */
-    public Admin queryByName(String name);
+    public Admin queryByName(String name)throws Exception;
 
 
 
-    public Boolean addAdmin(Admin admin);
-    public Boolean removeAdmin(String adminName);
-    public Boolean modifyAdmin(Admin admin);
+    public void addAdmin(Admin admin)throws Exception;
+    public void removeAdmin(String adminName)throws Exception;
+    public void modifyAdmin(Admin admin)throws Exception;
 }

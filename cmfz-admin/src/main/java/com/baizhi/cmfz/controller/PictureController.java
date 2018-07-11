@@ -37,7 +37,7 @@ public class PictureController {
      */
     @RequestMapping("/showAll")
     @ResponseBody
-    public Map<String,Object> showAll(Integer page,Integer rows){
+    public Map<String,Object> showAll(Integer page,Integer rows)throws Exception{
         return ps.queryAll(page, rows);
     }
 
@@ -53,7 +53,7 @@ public class PictureController {
      */
     @RequestMapping("/showById")
     @ResponseBody
-    public Picture showById(String pictureId){
+    public Picture showById(String pictureId)throws Exception{
         return ps.queryById(pictureId);
     }
 
@@ -69,8 +69,14 @@ public class PictureController {
      */
     @RequestMapping("/modifyPicture")
     @ResponseBody
-    public Boolean modifyPicture(Picture picture){
-        return ps.modifyPicture(picture);
+    public Boolean modifyPicture(Picture picture)throws Exception{
+        try {
+            ps.modifyPicture(picture);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 
@@ -84,7 +90,7 @@ public class PictureController {
      */
     @RequestMapping("/uploadPicture")
     @ResponseBody
-    public Boolean uploadPicture(MultipartFile pictureFile, HttpServletRequest request, Picture picture) throws IOException {
+    public Boolean uploadPicture(MultipartFile pictureFile, HttpServletRequest request, Picture picture) throws Exception {
         String realPath = request.getSession().getServletContext().getRealPath("/upload/picture").replace(request.getContextPath().replace("/","\\"),"");
         int i = pictureFile.getOriginalFilename().lastIndexOf(".");
         String s = pictureFile.getOriginalFilename().substring(i);
@@ -93,7 +99,8 @@ public class PictureController {
         pictureFile.transferTo(new File(realPath,s2));
         picture.setPicturePath(s2);
         picture.setPictureDate(new Date());
-        Boolean flag = ps.addPicture(picture);
-        return flag;
+        ps.addPicture(picture);
+        return true;
+
     }
 }

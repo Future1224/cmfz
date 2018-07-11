@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public Admin login(String adminName, String adminPassword) {
+    public Admin login(String adminName, String adminPassword)throws Exception {
         Admin admin = ad.selectByName(adminName);
         //md5加密       password+salt
         if(admin!=null&&admin.getAdminPassword().equals(DigestUtils.md5Hex(adminPassword+admin.getAdminSalt()))){
@@ -53,7 +53,7 @@ public class AdminServiceImpl implements AdminService {
      */
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public Admin queryByName(String adminName) {
+    public Admin queryByName(String adminName)throws Exception {
         return ad.selectByName(adminName);
     }
 
@@ -68,16 +68,15 @@ public class AdminServiceImpl implements AdminService {
      * @return java.lang.Boolean
      */
     @Override
-    public Boolean addAdmin(Admin admin) {
+    public void addAdmin(Admin admin)throws Exception{
         String s = RandomStringUtils.randomAlphanumeric(5);
         admin.setAdminSalt(s);
         admin.setAdminPassword(DigestUtils.md5Hex(admin.getAdminPassword()+s));
         Integer i = ad.insertAdmin(admin);
-        if(i>0){
-            return  true;
-        }
+        if(i<=0){
+                throw new RuntimeException("管理员添加失败！");
+            }
 
-        return false;
     }
 
     /**
@@ -89,12 +88,11 @@ public class AdminServiceImpl implements AdminService {
      * @return java.lang.Boolean
      */
     @Override
-    public Boolean removeAdmin(String adminName) {
+    public void removeAdmin(String adminName)throws Exception {
         Integer i = ad.deleteAdmin(adminName);
-        if(i>0){
-            return true;
+        if(i<=0){
+            throw new RuntimeException("管理员修改失败！");
         }
-        return false;
     }
 
 
@@ -107,8 +105,7 @@ public class AdminServiceImpl implements AdminService {
      * @return java.lang.Boolean
      */
     @Override
-    public Boolean modifyAdmin(Admin admin) {
-        return null;
+    public void modifyAdmin(Admin admin)throws Exception {
 
 
     }

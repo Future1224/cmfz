@@ -29,7 +29,7 @@ public class LogServiceImpl implements LogService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public Map<String, Object> queryAllByPage(Integer page, Integer rows) {
+    public Map<String, Object> queryAllByPage(Integer page, Integer rows)throws Exception {
 
 
         List<Log> logs = ld.selectAllByPage((page - 1) * rows, rows);

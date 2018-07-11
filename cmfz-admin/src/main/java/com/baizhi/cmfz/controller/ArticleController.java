@@ -36,7 +36,7 @@ public class ArticleController {
 
     @RequestMapping("/uploadArticlePicture")
     @ResponseBody
-    public TextResult uploadArticlePicture(@RequestParam("articlePictureFile") MultipartFile[] file, HttpServletRequest request){
+    public TextResult uploadArticlePicture(@RequestParam("articlePictureFile") MultipartFile[] file, HttpServletRequest request)throws Exception{
         String realPath = request.getSession().getServletContext().getRealPath("/upload/articlePicture").replace(request.getContextPath().replace("/", "\\"), "");
         TextResult result = new TextResult();
         result.setErrno(1);
@@ -63,16 +63,22 @@ public class ArticleController {
 
     @RequestMapping("/addArticle")
     @ResponseBody
-    public String addArticle(Article article){
+    public String addArticle(Article article)throws Exception{
         System.out.println(article);
         if (article.getGuru().getGuruId().equals("--请选择--")){
             return "noMasterError";
         }
         article.setArticleDate(new Date());
-        Boolean flag = as.addArticle(article);
-        if(flag){
-            return "ok";
+
+        try {
+            as.addArticle(article);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "error";
         }
-        return "error";
+
+
+        return "ok";
+
     }
 }

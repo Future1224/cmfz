@@ -10,5 +10,5 @@ import com.baizhi.cmfz.entity.Article;
  */
 public interface ArticleService {
 
-    public Boolean addArticle(Article article);
+    public void addArticle(Article article)throws Exception;
 }

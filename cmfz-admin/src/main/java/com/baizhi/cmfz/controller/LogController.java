@@ -23,7 +23,7 @@ public class LogController {
 
     @RequestMapping("/showAllByPage")
     @ResponseBody
-    public Map<String,Object> showAllByPage(Integer page,Integer rows){
+    public Map<String,Object> showAllByPage(Integer page,Integer rows)throws Exception{
         return ls.queryAllByPage(page, rows);
     }
 }

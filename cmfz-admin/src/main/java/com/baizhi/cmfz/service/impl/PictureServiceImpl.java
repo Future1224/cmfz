@@ -33,12 +33,11 @@ public class PictureServiceImpl implements PictureService {
      * @return java.lang.Boolean
      */
     @Override
-    public Boolean addPicture(Picture picture) {
+    public void addPicture(Picture picture)throws Exception {
         Integer i = pd.insertPicture(picture);
-        if(i>0){
-            return true;
+        if(i<=0){
+            throw new RuntimeException("轮播图添加失败！");
         }
-        return false;
     }
 
 
@@ -51,12 +50,11 @@ public class PictureServiceImpl implements PictureService {
      * @return java.lang.Boolean
      */
     @Override
-    public Boolean removePicture(String pictureId) {
+    public void removePicture(String pictureId)throws Exception {
         Integer i = pd.deletePicture(pictureId);
-        if(i>0){
-            return true;
+        if(i<=0){
+            throw new RuntimeException("轮播图删除失败！");
         }
-        return false;
     }
 
 
@@ -70,12 +68,11 @@ public class PictureServiceImpl implements PictureService {
      * @return java.lang.Boolean
      */
     @Override
-    public Boolean modifyPicture(Picture picture) {
+    public void modifyPicture(Picture picture)throws Exception {
         Integer i = pd.updatePicture(picture);
-        if(i>0){
-            return true;
+        if(i<=0){
+            throw new RuntimeException("轮播图修改失败！");
         }
-        return false;
     }
 
 
@@ -90,7 +87,7 @@ public class PictureServiceImpl implements PictureService {
      */
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public Picture queryById(String pictureId) {
+    public Picture queryById(String pictureId)throws Exception {
         return pd.selectById(pictureId);
     }
 
@@ -105,7 +102,7 @@ public class PictureServiceImpl implements PictureService {
      */
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public Map<String, Object> queryAll(Integer page, Integer rows) {
+    public Map<String, Object> queryAll(Integer page, Integer rows)throws Exception {
         List<Picture> pictures = pd.selectAll((page - 1) * rows, rows);
         Long count = pd.count();
         Map<String, Object> map = new HashMap<String,Object>();

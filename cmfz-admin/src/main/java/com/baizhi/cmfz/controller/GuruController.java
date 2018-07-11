@@ -2,7 +2,10 @@ package com.baizhi.cmfz.controller;
 
 import com.baizhi.cmfz.entity.Guru;
 import com.baizhi.cmfz.service.GuruService;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.jeecgframework.poi.excel.ExcelExportUtil;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
+import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -39,7 +44,7 @@ public class GuruController {
      */
     @RequestMapping("/showAll")
     @ResponseBody
-    public Map<String,Object> showAll(Integer page,Integer rows){
+    public Map<String,Object> showAll(Integer page,Integer rows)throws Exception{
         return gs.querytAll(page, rows);
     }
 
@@ -54,7 +59,7 @@ public class GuruController {
      */
     @RequestMapping("/showLikeName")
     @ResponseBody
-    public Map<String,Object> showLikeName(String like,Integer page,Integer rows){
+    public Map<String,Object> showLikeName(String like,Integer page,Integer rows)throws Exception{
         return gs.queryLikeName(like,page,rows);
     }
 
@@ -69,7 +74,7 @@ public class GuruController {
      */
     @RequestMapping("/showById")
     @ResponseBody
-    public Guru showById(String guruId){
+    public Guru showById(String guruId)throws Exception{
         return gs.queryById(guruId);
     }
 
@@ -84,7 +89,7 @@ public class GuruController {
      */
     @RequestMapping("/modifyGuru")
     @ResponseBody
-    public Boolean modifyGuru(Guru guru,MultipartFile guruPhotoFile,HttpServletRequest request) throws IOException {
+    public Boolean modifyGuru(Guru guru,MultipartFile guruPhotoFile,HttpServletRequest request) throws Exception {
         if(guruPhotoFile.getOriginalFilename()!=null && guruPhotoFile.getOriginalFilename()!=""){          //判断是否有上传的头像文件
             String realPath = request.getSession().getServletContext().getRealPath("/upload/guruPhoto").replace(request.getContextPath().replace("/","\\"),"");
             int i = guruPhotoFile.getOriginalFilename().lastIndexOf(".");
@@ -94,7 +99,12 @@ public class GuruController {
             guruPhotoFile.transferTo(new File(realPath,s2));
             guru.setGuruPhoto(s2);
         }
-        return gs.modifyGuru(guru);
+        try {
+            gs.modifyGuru(guru);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
 
@@ -109,7 +119,7 @@ public class GuruController {
      */
     @RequestMapping("/addGuru")
     @ResponseBody
-    public Boolean addGuru(MultipartFile guruPhotoFile, HttpServletRequest request, Guru guru) throws IOException {
+    public Boolean addGuru(MultipartFile guruPhotoFile, HttpServletRequest request, Guru guru) throws Exception {
         String realPath = request.getSession().getServletContext().getRealPath("/upload/guruPhoto").replace(request.getContextPath().replace("/","\\"),"");
         int i = guruPhotoFile.getOriginalFilename().lastIndexOf(".");
         String s = guruPhotoFile.getOriginalFilename().substring(i);
@@ -117,8 +127,13 @@ public class GuruController {
         String s2 = s1+s;
         guruPhotoFile.transferTo(new File(realPath,s2));
         guru.setGuruPhoto(s2);
-        Boolean flag = gs.addGuru(guru);
-        return flag;
+        try {
+            gs.addGuru(guru);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -136,7 +151,14 @@ public class GuruController {
         params.setTitleRows(1);//表格头占几行
         params.setHeadRows(1);//列头占几行
         List<Guru> gurus = ExcelImportUtil.importExcel(guruExeclFile.getInputStream(), Guru.class, params);
-        return gs.addBulkGuru(gurus);
+        try {
+            gs.addBulkGuru(gurus);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+
     }
 
 
@@ -144,8 +166,28 @@ public class GuruController {
 
     @RequestMapping("/searchAll")
     @ResponseBody
-    public List<Guru> searchAll(){
+    public List<Guru> searchAll()throws Exception {
         return  gs.querytAllNoPage();
+    }
+
+
+
+    @RequestMapping("/exportGuru")
+    public void exportGuru(HttpServletResponse response)throws Exception{
+        List<Guru> gurus = gs.querytAllNoPage();
+        // Excel文件
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("持明法洲上师信息表", "上师信息表"), Guru.class, gurus);
+        // 文件下载 设置响应头
+        // 注意：响应头 默认使用的编码格式iso-8859-1
+        String fileName = new String("持明法洲上师信息表.xls".getBytes(), "iso-8859-1");
+        response.setContentType("application/vnd.ms-excel"); //响应类型  text/html  application/json
+        response.setHeader("content-disposition","attachment;fileName="+fileName);
+        ServletOutputStream out = response.getOutputStream();
+        // 导出 文件下载的方式
+        workbook.write(out);
+        out.close();
+
+
     }
 
 

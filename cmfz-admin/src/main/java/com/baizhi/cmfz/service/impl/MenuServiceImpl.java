@@ -24,7 +24,7 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public List<Menu> queryAll() {
+    public List<Menu> queryAll()throws Exception {
         return md.selectAll();
     }
 }

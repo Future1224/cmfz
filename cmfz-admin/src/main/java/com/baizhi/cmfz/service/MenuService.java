@@ -11,5 +11,5 @@ import java.util.List;
  * @create 2018-07-05 13:09
  */
 public interface MenuService {
-    public List<Menu> queryAll();
+    public List<Menu> queryAll()throws Exception;
 }

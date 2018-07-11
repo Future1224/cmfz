@@ -13,20 +13,20 @@ import java.util.Map;
  */
 public interface GuruService {
 
-    public Boolean addGuru(Guru guru);
+    public void addGuru(Guru guru)throws Exception;
 
-    public Boolean addBulkGuru(List<Guru> gurus);
+    public void addBulkGuru(List<Guru> gurus)throws Exception;
 
-    public Boolean removeGuru( String guruId);
+    public void removeGuru( String guruId)throws Exception;
 
-    public Boolean modifyGuru (Guru guru);
+    public void modifyGuru (Guru guru)throws Exception;
 
-    public Guru queryById(String guruId);
+    public Guru queryById(String guruId)throws Exception;
 
-    public Map<String,Object> queryLikeName(String guruName, Integer page, Integer rows);
+    public Map<String,Object> queryLikeName(String guruName, Integer page, Integer rows)throws Exception;
 
-    public Map<String,Object>  querytAll(Integer page,Integer rows);
+    public Map<String,Object>  querytAll(Integer page,Integer rows)throws Exception;
 
 
-    public List<Guru>  querytAllNoPage();
+    public List<Guru>  querytAllNoPage()throws Exception;
 }

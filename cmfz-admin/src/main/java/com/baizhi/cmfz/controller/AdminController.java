@@ -3,6 +3,10 @@ package com.baizhi.cmfz.controller;
 import com.baizhi.cmfz.entity.Admin;
 import com.baizhi.cmfz.service.AdminService;
 import com.baizhi.cmfz.util.NewValidateCodeUtil;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,27 +34,23 @@ public class AdminController {
     private AdminService as;
 
 
-
-
-
-
     /**
      * 描述:
      *
+     * @return java.lang.String
      * @author future_zwp
      * @Date 2018/7/9 12:03
      * @Param [request, model]
-     * @return java.lang.String
      */
     @RequestMapping("/getCookie")
-    public String getCookie(HttpServletRequest request,Model model){
+    public String getCookie(HttpServletRequest request, Model model) throws Exception {
         Cookie[] cookies = request.getCookies();
-        if(cookies!=null){
+        if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("adminName")){
-                    model.addAttribute("adminName",cookie.getValue());
+                if (cookie.getName().equals("adminName")) {
+                    model.addAttribute("adminName", cookie.getValue());
                 }
-                if(cookie.getName().equals("adminPassword")){
+                if (cookie.getName().equals("adminPassword")) {
                     model.addAttribute("adminPassword", cookie.getValue());
                 }
             }
@@ -61,20 +61,19 @@ public class AdminController {
     }
 
 
-
     /**
      * 描述:
      *
+     * @return void
      * @author future_zwp
      * @Date 2018/7/9 12:04
      * @Param [response, session]
-     * @return void
      */
     @RequestMapping("/newCode")
-    public void newCode(HttpServletResponse response,HttpSession session) throws IOException {
+    public void newCode(HttpServletResponse response, HttpSession session) throws Exception {
         NewValidateCodeUtil newCode = new NewValidateCodeUtil(110, 35, 4, 5);
         String vcode = newCode.getCode();
-        session.setAttribute("vcode",vcode);
+        session.setAttribute("vcode", vcode);
         newCode.write(response.getOutputStream());
     }
 
@@ -82,40 +81,73 @@ public class AdminController {
     /**
      * 描述:
      *
+     * @return java.lang.String
      * @author future_zwp
      * @Date 2018/7/5 9:07
      * @Param [adminName, adminPassword, remember, code, model, session, response]
-     * @return java.lang.String
      */
     @RequestMapping("/login")
-    public String login(String adminName, String adminPassword,String[] remember, String code, Model model, HttpSession session, HttpServletResponse response){
-            if (code!=null||!code.equals("")){                                  //判断验证码是否为空
-                String vcode = (String)session.getAttribute("vcode");         //session中取出验证码
-                if(code.equalsIgnoreCase(vcode)){                               //判断验证码是否正确
-                    Admin admin = as.login(adminName, adminPassword);           //调用业务登录方法
-                    if(admin!=null){                                            //业务方法返回值不为空则登录成功
-                        if(remember!=null){
-                            Cookie adminName1 = new Cookie("adminName", adminName);//存储cookie作为记住我数据
-                            adminName1.setMaxAge(60*60*24*7);
-                            response.addCookie(adminName1);
-                            Cookie adminPassword1 = new Cookie("adminPassword", adminPassword);
-                            adminName1.setMaxAge(60*60*24*7);
-                            response.addCookie(adminPassword1);
-                        }else{                                                          //未选中记住我情况下将cookie设置为空串
-                            Cookie adminName2 = new Cookie("adminName", "");
-                            adminName2.setMaxAge(60*60*24*7);
-                            response.addCookie(adminName2);
-                            Cookie adminPassword2 = new Cookie("adminPassword", "");
-                            adminName2.setMaxAge(60*60*24*7);
-                            response.addCookie(adminPassword2);
-                        }
-                        model.addAttribute("admin",admin);                     //存admin到session中
-                        return "main/main";
+    public String login(String adminName, String adminPassword, String[] remember, String code, Model model, HttpSession session, HttpServletResponse response) throws Exception {
+        if (code != null && !code.equals("")) {                                  //判断验证码是否为空
+            String vcode = (String) session.getAttribute("vcode");         //session中取出验证码
+            if (code.equalsIgnoreCase(vcode)) {                               //判断验证码是否正确
+
+                Subject subject = SecurityUtils.getSubject();
+                try {
+                    subject.login(new UsernamePasswordToken(adminName, adminPassword));
+                    if (remember != null) {
+                        Cookie adminName1 = new Cookie("adminName", adminName);//存储cookie作为记住我数据
+                        adminName1.setMaxAge(60 * 60 * 24 * 7);
+                        response.addCookie(adminName1);
+                        Cookie adminPassword1 = new Cookie("adminPassword", adminPassword);
+                        adminPassword1.setMaxAge(60 * 60 * 24 * 7);
+                        response.addCookie(adminPassword1);
+                    } else {                                                          //未选中记住我情况下将cookie设置为空串
+                        Cookie adminName2 = new Cookie("adminName", "");
+                        adminName2.setMaxAge(60 * 60 * 24 * 7);
+                        response.addCookie(adminName2);
+                        Cookie adminPassword2 = new Cookie("adminPassword", "");
+                        adminName2.setMaxAge(60 * 60 * 24 * 7);
+                        response.addCookie(adminPassword2);
                     }
+                    return "main/main";
+                } catch (AuthenticationException e) {
+                    e.printStackTrace();
+                    System.out.println("=========================账号或密码错误===========================");
+                    return "redirect:getCookie";
                 }
-
             }
-
-                return "redirect:getCookie";
+        }
+        return "redirect:getCookie";
     }
+
 }
+
+
+//                    Admin admin = as.login(adminName, adminPassword);           //调用业务登录方法
+//                    if(admin!=null){                                            //业务方法返回值不为空则登录成功
+//                        if(remember!=null){
+//                            Cookie adminName1 = new Cookie("adminName", adminName);//存储cookie作为记住我数据
+//                            adminName1.setMaxAge(60*60*24*7);
+//                            response.addCookie(adminName1);
+//                            Cookie adminPassword1 = new Cookie("adminPassword", adminPassword);
+//                            adminName1.setMaxAge(60*60*24*7);
+//                            response.addCookie(adminPassword1);
+//                        }else{                                                          //未选中记住我情况下将cookie设置为空串
+//                            Cookie adminName2 = new Cookie("adminName", "");
+//                            adminName2.setMaxAge(60*60*24*7);
+//                            response.addCookie(adminName2);
+//                            Cookie adminPassword2 = new Cookie("adminPassword", "");
+//                            adminName2.setMaxAge(60*60*24*7);
+//                            response.addCookie(adminPassword2);
+//                        }
+//                        model.addAttribute("admin",admin);                     //存admin到session中
+//                        return "main/main";
+//                    }
+//                }
+//
+//            }
+//
+//                return "redirect:getCookie";
+//    }
+//}

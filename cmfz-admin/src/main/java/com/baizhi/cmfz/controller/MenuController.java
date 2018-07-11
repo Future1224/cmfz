@@ -33,7 +33,7 @@ public class MenuController {
 
     @RequestMapping("/getMenu")
     @ResponseBody
-    public List<Menu> getMenu(){
+    public List<Menu> getMenu()throws Exception{
         List<Menu> menus = ms.queryAll();
 
         return menus;

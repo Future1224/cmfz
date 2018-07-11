@@ -27,50 +27,46 @@ public class guruServiceImpl implements GuruService {
     private GuruDao gd;
 
     @Override
-    public Boolean addGuru(Guru guru) {
+    public void addGuru(Guru guru) throws Exception{
         Integer i = gd.insertGuru(guru);
-        if(i>0){
-            return true;
+        if(i<=0){
+            throw new RuntimeException("上师添加失败！");
         }
-        return false;
     }
 
     @Override
-    public Boolean addBulkGuru(List<Guru> gurus) {
+    public void addBulkGuru(List<Guru> gurus)throws Exception {
         Integer i = gd.insertBulkGuru(gurus);
-        if(i== gurus.size()){
-            return true;
+        if(i!=gurus.size()){
+            throw new RuntimeException("批量添加上师失败！");
         }
-        return false;
     }
 
     @Override
-    public Boolean removeGuru(String guruId) {
+    public void removeGuru(String guruId) throws Exception{
         Integer i = gd.deleteGuru(guruId);
-        if(i>0){
-            return true;
+        if(i<=0){
+            throw new RuntimeException("上师删除失败！");
         }
-        return false;
     }
 
     @Override
-    public Boolean modifyGuru(Guru guru) {
+    public void modifyGuru(Guru guru)throws Exception {
         Integer i = gd.updateGuru(guru);
-        if(i>0){
-            return true;
+        if(i<=0){
+            throw new RuntimeException("上师修改失败！");
         }
-        return false;
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public Guru queryById(String guruId) {
+    public Guru queryById(String guruId)throws Exception {
         return gd.selectById(guruId);
     }
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public Map<String,Object> queryLikeName(String guruName, Integer page, Integer rows) {
+    public Map<String,Object> queryLikeName(String guruName, Integer page, Integer rows)throws Exception {
         String s = "%" + guruName + "%";
         List<Guru> gurus = gd.selectLikeName(s, (page - 1) * rows, rows);
         Long count = gd.countLikeName(s);
@@ -82,7 +78,7 @@ public class guruServiceImpl implements GuruService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public Map<String,Object> querytAll(Integer page, Integer rows) {
+    public Map<String,Object> querytAll(Integer page, Integer rows) throws Exception{
         List<Guru> gurus = gd.selectAll((page - 1) * rows, rows);
         Long count = gd.count();
         Map<String, Object> map = new HashMap<String, Object>();
@@ -93,7 +89,7 @@ public class guruServiceImpl implements GuruService {
 
     @Override
     @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
-    public List<Guru> querytAllNoPage() {
+    public List<Guru> querytAllNoPage()throws Exception {
         return gd.selectAllNoPage();
     }
 }

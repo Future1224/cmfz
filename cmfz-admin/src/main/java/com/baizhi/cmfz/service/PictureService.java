@@ -14,14 +14,14 @@ import java.util.Map;
 
 public interface PictureService {
 
-    public Boolean addPicture(Picture picture);
+    public void addPicture(Picture picture)throws Exception;
 
-    public Boolean removePicture(String pictureId);
+    public void removePicture(String pictureId)throws Exception;
 
-    public Boolean modifyPicture(Picture picture);
+    public void modifyPicture(Picture picture)throws Exception;
 
-    public Picture queryById(String pictureId);
+    public Picture queryById(String pictureId)throws Exception;
 
-    public Map<String,Object> queryAll(Integer page,Integer rows);
+    public Map<String,Object> queryAll(Integer page,Integer rows)throws Exception;
 
 }

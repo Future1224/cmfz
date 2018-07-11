@@ -23,11 +23,10 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleDao ad;
 
     @Override
-    public Boolean addArticle(Article article) {
+    public void addArticle(Article article) throws Exception{
         Integer i = ad.insertArticle(article);
-        if(i>0){
-            return true;
+        if(i<=0){
+            throw new RuntimeException("添加文章失败！");
         }
-        return false;
     }
 }

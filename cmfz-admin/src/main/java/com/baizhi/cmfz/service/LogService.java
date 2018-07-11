@@ -13,5 +13,5 @@ import java.util.Map;
  */
 public interface LogService {
 
-    public Map<String,Object> queryAllByPage(Integer page, Integer rows);
+    public Map<String,Object> queryAllByPage(Integer page, Integer rows)throws Exception;
 }
