@@ -45,9 +45,9 @@ public class LogProxy {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
                 .getRequestAttributes()).getRequest();
         HttpSession session = request.getSession();
-        Admin admin = (Admin) session.getAttribute("admin");
-        if (admin!=null){
-            log.setAdminName(admin.getAdminName());
+        String adminName = (String) session.getAttribute("adminName");
+        if (adminName!=null){
+            log.setAdminName(adminName);
         }
 
 

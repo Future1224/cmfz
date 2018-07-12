@@ -1,6 +1,10 @@
 package com.baizhi.cmfz.service;
 
 import com.baizhi.cmfz.entity.Admin;
+import com.baizhi.cmfz.entity.Permission;
+import com.baizhi.cmfz.entity.Role;
+
+import java.util.List;
 
 /**
  * 描述:管理员业务接口
@@ -36,4 +40,9 @@ public interface AdminService {
     public void addAdmin(Admin admin)throws Exception;
     public void removeAdmin(String adminName)throws Exception;
     public void modifyAdmin(Admin admin)throws Exception;
+
+
+    public List<Role> queryRoleByAdminName(String adminName)throws Exception;
+
+    public List<Permission> queryPermissionByAdminName(String adminName)throws Exception;
 }

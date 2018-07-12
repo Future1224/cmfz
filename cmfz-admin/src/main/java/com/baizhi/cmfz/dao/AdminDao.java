@@ -1,7 +1,12 @@
 package com.baizhi.cmfz.dao;
 
 import com.baizhi.cmfz.entity.Admin;
+import com.baizhi.cmfz.entity.Permission;
+import com.baizhi.cmfz.entity.Role;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * 描述:后台管理员Dao
@@ -16,7 +21,7 @@ public interface AdminDao {
      *
      * @author future_zwp
      * @date 2018/7/4 21:54
-     * @param [adminName]
+     * @param
      * @return com.baizhi.cmfz.entity.Admin
      */
     public Admin selectByName(@Param("adminName") String adminName);
@@ -27,7 +32,7 @@ public interface AdminDao {
      *
      * @author future_zwp
      * @date 2018/7/4 22:00
-     * @param [admin]
+     * @param
      * @return java.lang.Integer
      */
     public Integer insertAdmin(Admin admin);
@@ -38,7 +43,7 @@ public interface AdminDao {
      *
      * @author future_zwp
      * @date 2018/7/4 22:01
-     * @param [adminName]
+     * @param
      * @return java.lang.Integer
      */
     public Integer deleteAdmin(@Param("adminName") String adminName);
@@ -49,10 +54,17 @@ public interface AdminDao {
      *
      * @author future_zwp
      * @date 2018/7/4 22:03
-     * @param [admin]
+     * @param
      * @return java.lang.Integer
      */
     public Integer updateAdmin(Admin admin);
+
+
+    public List<Role> selectRoleByAdminName(@Param("adminName") String adminName);
+
+    public List<Permission> selectPermissionByAdminName(@Param("adminName") String adminName);
+
+
 
 
 }

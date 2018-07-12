@@ -1,17 +1,20 @@
 package com.baizhi.cmfz.util;
 
 import com.baizhi.cmfz.entity.Admin;
+import com.baizhi.cmfz.entity.Permission;
+import com.baizhi.cmfz.entity.Role;
 import com.baizhi.cmfz.service.AdminService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -29,7 +32,28 @@ public class MyRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        String userName = (String) principalCollection.getPrimaryPrincipal();
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+
+
+        try {
+            List<Role> roles = as.queryRoleByAdminName(userName);
+            if(roles!=null){
+                for (Role role : roles) {
+                    info.addRole(role.getRoleTag());
+                }
+            }
+            List<Permission> permissions = as.queryPermissionByAdminName(userName);
+            if(permissions!=null){
+                for (Permission permission : permissions) {
+                    info.addStringPermission(permission.getPermissionTag());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return info;
     }
 
     @Override

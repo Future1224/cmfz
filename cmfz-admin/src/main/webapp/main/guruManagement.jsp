@@ -1,5 +1,6 @@
 <%@page contentType="text/html;charset=UTF-8" language="java" pageEncoding="utf-8" %>
 <%@page isELIgnored="false" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/datagrid-detailview.js"></script>
 <script type="text/javascript">
     $(function () {
@@ -12,11 +13,14 @@
                 {field: "guruPhoto", title: "头像路径", width: 387},
                 {field: "guruName", title: "上师法名", width: 387},
                 {field: "guruIntro", title: "上师简介", width: 387,hidden:true},
+                //判断是否拥有修改的权限
+                <shiro:hasPermission name="guru:modify">
                 {
                     field: "hhh", title: "操作", width: 387, formatter: function (value, row, index) {
                         return "<a id=\"" + row.guruId + "\" name=\"changeGuru\" onclick=\"modifyGuru(this)\">修改</a>";
                     }
                 }
+                </shiro:hasPermission>
             ]],
             singleSelect: true,
             pagination: true,
@@ -270,15 +274,21 @@
 
 <table id="guruTable"></table>
 <div id="toolGuru">
-    <a id="addGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35">添加上师</a>&nbsp;&nbsp;
+    <%--判断是否拥有添加上师的权限--%>
+    <shiro:hasPermission name="guru:add">
+        <a id="addGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35">添加上师</a>&nbsp;&nbsp;
+    </shiro:hasPermission>
     <a id="helpGuru" class="easyui-linkbutton" data-options="iconCls:'icon-help',plain:true,height:35">帮助</a>&nbsp;&nbsp;
     <input id="guruLike" />
     <div id="mm" style="width:120px">
         <div data-options="name:'showLikeName',iconCls:'icon-ok'">上师法名</div>
     </div>&nbsp;&nbsp;
     <a id="exportGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35" >导出上师</a>&nbsp;&nbsp;
-    <a id="addBulkGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35" >批量添加上师</a>&nbsp;&nbsp;
 
+        <%--判断是否是root角色登录--%>
+    <shiro:hasRole name="root">
+    <a id="addBulkGuru" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true,height:35" >批量添加上师</a>&nbsp;&nbsp;
+    </shiro:hasRole>
 
 </div>
 <div id="addGuruDialog"></div>

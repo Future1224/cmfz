@@ -28,7 +28,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/admin")
-@SessionAttributes(value = {"admin"})
+@SessionAttributes(value = {"adminName"})
 public class AdminController {
     @Autowired
     private AdminService as;
@@ -95,6 +95,14 @@ public class AdminController {
                 Subject subject = SecurityUtils.getSubject();
                 try {
                     subject.login(new UsernamePasswordToken(adminName, adminPassword));
+//                    System.out.println("====================================================================");
+//                    System.out.println(subject.hasRole("root"));
+//                    System.out.println(subject.hasRole("admin"));
+//                    System.out.println(subject.hasRole("admin1"));
+//                    System.out.println(subject.isPermitted("guru:add"));
+//                    System.out.println(subject.isPermitted("guru:query"));
+//                    System.out.println(subject.isPermitted("guru:bulk"));
+//                    System.out.println("=========================================================================");
                     if (remember != null) {
                         Cookie adminName1 = new Cookie("adminName", adminName);//存储cookie作为记住我数据
                         adminName1.setMaxAge(60 * 60 * 24 * 7);
@@ -110,6 +118,7 @@ public class AdminController {
                         adminName2.setMaxAge(60 * 60 * 24 * 7);
                         response.addCookie(adminPassword2);
                     }
+                    model.addAttribute("adminName",adminName);
                     return "main/main";
                 } catch (AuthenticationException e) {
                     e.printStackTrace();

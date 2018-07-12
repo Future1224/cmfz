@@ -11,11 +11,22 @@
         <property name="hashIterations" value="520"></property>
     </bean>
 
+
+
     <!--自定义数据源Realm-->
     <bean id="myRealm" class="com.baizhi.cmfz.util.MyRealm">
         <!--注入凭证匹配器-->
         <property name="credentialsMatcher" ref="credentialsMatcher"></property>
     </bean>
+
+
+
+    <!--缓存管理器-->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"></property>
+    </bean>
+
+
 
     <!--配置安全管理器-->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -25,7 +36,13 @@
                     <ref bean="myRealm"></ref>
                 </list>
             </property>
+        <!--注入缓存管理器-->
+        <property name="cacheManager" ref="cacheManager"></property>
     </bean>
+
+
+
+
     <!--配置与web.xml对应的filter Bean-->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <!--注入安全管理器-->

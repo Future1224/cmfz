@@ -31,5 +31,44 @@
 		select admin_id,admin_name,admin_password,admin_salt,admin_rank from t_admin
 		where admin_name = #{adminName}
 	</select>
+
+	<!--根据名字查询角色-->
+	<select id="selectRoleByAdminName" resultType="Role">
+		select role_id,role_name,role_tag from t_role
+		where role_id in (select role_id from t_admin_role where admin_id = ( select admin_id from t_admin where admin_name = #{adminName}))
+	</select>
+
+	<!--根据名字查询权限-->
+	<select id="selectPermissionByAdminName" resultType="Permission">
+		SELECT
+			permission_id,
+			permission_name,
+			permission_tag
+		FROM
+			t_permission
+		WHERE
+			permission_id IN (
+		SELECT
+			permission_id
+		FROM
+			t_role_permission
+		WHERE
+			role_id IN (
+		SELECT
+			role_id
+		FROM
+			t_admin_role
+		WHERE
+			admin_id = (
+		SELECT
+			admin_id
+		FROM
+			t_admin
+		WHERE
+			admin_name = #{adminName}
+		)
+		)
+		)
+	</select>
   	
 </mapper>

@@ -2,6 +2,8 @@ package com.baizhi.cmfz.service.impl;
 
 import com.baizhi.cmfz.dao.AdminDao;
 import com.baizhi.cmfz.entity.Admin;
+import com.baizhi.cmfz.entity.Permission;
+import com.baizhi.cmfz.entity.Role;
 import com.baizhi.cmfz.service.AdminService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -9,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 描述:管理员业务实现类
@@ -108,6 +112,16 @@ public class AdminServiceImpl implements AdminService {
     public void modifyAdmin(Admin admin)throws Exception {
 
 
+    }
+
+    @Override
+    public List<Role> queryRoleByAdminName(String adminName) throws Exception{
+        return ad.selectRoleByAdminName(adminName);
+    }
+
+    @Override
+    public List<Permission> queryPermissionByAdminName(String adminName) throws Exception{
+        return ad.selectPermissionByAdminName(adminName);
     }
 
 }
